@@ -73,7 +73,10 @@
     "build-storybook": "build-storybook",
     "nx": "nx",
     "postinstall": "ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points",
-    "docker-test": "docker run -u $(id -u) --rm -v \"$PWD\":/app trion/ng-cli-karma npm run test"
+    "docker-test": "docker run -u $(id -u) --rm -v \"$PWD\":/app trion/ng-cli-karma npm run test",
+    "build:elements": "ng build --prod --project core-elements --output-hashing none && npm run pack:elements",
+    "pack:elements": "cat ./dist/libs/core-elements/runtime.js ./dist/libs/core-elements/polyfills.js ./dist/libs/core-elements/main.js > dist/libs/core-elements/elements.js",
+    "build:components": "ng build --prod --project components"
   },
   "publishConfig": {
     "registry": "https://repository.hybris.com/api/npm/npm-repository/"
@@ -96,6 +99,7 @@
     "@types/node": "14.11.7",
     "classlist.js": "1.1.20150312",
     "core-js": "3.7.0",
+    "document-register-element": "^1.7.2",
     "flexboxgrid": "6.3.1",
     "focus-trap": "6.1.4",
     "fundamental-styles": "0.12.0",

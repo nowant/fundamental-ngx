@@ -18,6 +18,9 @@
         "core": {
             "tags": ["fd"]
         },
+        "core-elements": {
+            "tags": ["fd-elements"]
+        },
         "platform": {
             "tags": ["fdp"]
         }

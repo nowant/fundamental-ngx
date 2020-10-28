@@ -47,11 +47,11 @@
                         ],
                         "showCircularDependencies": false,
                         "allowedCommonJsDependencies": [
-                          "moment",
-                          "highlight.js",
-                          "focus-trap",
-                          "@angularclass/hmr",
-                          "hammerjs"
+                            "moment",
+                            "highlight.js",
+                            "focus-trap",
+                            "@angularclass/hmr",
+                            "hammerjs"
                         ]
                     },
                     "configurations": {
@@ -217,6 +217,50 @@
                         "exclude": [
                             "!apps/docs-e2e/**"
                         ]
+                    }
+                }
+            }
+        },
+        "core-elements": {
+            "root": "libs/core-elements",
+            "sourceRoot": "libs/core-elements/src",
+            "projectType": "application",
+            "prefix": "fundamental-ngx",
+            "architect": {
+                "build": {
+                    "builder": "@angular-devkit/build-angular:browser",
+                    "options": {
+                        "outputPath": "dist/libs/core-elements",
+                        "index": "libs/core-elements/src/index.html",
+                        "main": "libs/core-elements/src/main.ts",
+                        "polyfills": "libs/core-elements/src/polyfills.ts",
+                        "tsConfig": "libs/core-elements/tsconfig.app.json",
+                        "aot": true,
+                        "scripts": []
+                    },
+                    "configurations": {
+                        "production": {
+                            "optimization": true,
+                            "outputHashing": "all",
+                            "sourceMap": false,
+                            "extractCss": true,
+                            "namedChunks": false,
+                            "extractLicenses": true,
+                            "vendorChunk": false,
+                            "buildOptimizer": true,
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "2mb",
+                                    "maximumError": "5mb"
+                                },
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "6kb",
+                                    "maximumError": "10kb"
+                                }
+                            ]
+                        }
                     }
                 }
             }
