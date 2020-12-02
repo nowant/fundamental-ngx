@@ -10,7 +10,20 @@
 </head>
 
 <body>
-    <fd-button></fd-button>
+    <wc-select placeholder="My placeholder"></wc-select>
+    <wc-button label="Button" glyph="add"></wc-button>
+    <wc-combobox placeholder="My placeholder"></wc-combobox>
 </body>
+
+<script>
+    function get(name) { return document.getElementsByTagName(name)[0] }
+
+    get('wc-button').fdType = 'positive';
+    get('wc-select').options = ['Option 1', 'Option 2'];
+    get('wc-combobox').dropdownValues = ['Value 1', 'Value 2'];
+
+    get('wc-select').addEventListener('selectedValue', console.log);
+    get('wc-combobox').addEventListener('selectedValue', console.log);
+</script>
 
 </html>

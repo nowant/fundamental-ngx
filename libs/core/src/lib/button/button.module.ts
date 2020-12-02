@@ -13,9 +13,4 @@ import { createCustomElement } from '@angular/elements';
 })
 export class ButtonModule {
     constructor(private  _injector: Injector) {}
-
-    ngDoBootstrap() {
-        const customButton = createCustomElement(ButtonComponent, { injector: this._injector });
-        customElements.define('custom-fd-button', customButton);
-    }
 }

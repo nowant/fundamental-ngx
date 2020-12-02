@@ -1,40 +1,32 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, DoBootstrap, Injector } from '@angular/core';
+import { DoBootstrap, Injector, NgModule, Type } from '@angular/core';
 import { createCustomElement } from '@angular/elements';
-import {
-    ButtonComponent,
-    ButtonModule,
-    ComboboxComponent,
-    ComboboxModule,
-    OptionComponent,
-    SelectComponent,
-    SelectModule
-} from '@fundamental-ngx/core';
+import { ButtonModule, ComboboxModule, DynamicComponentService, SelectModule } from '@fundamental-ngx/core';
+import { components, WcButtonComponent, WcComboboxComponent, WcSelectComponent } from './components';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
-    declarations: [
-    ],
+    declarations: [components],
     imports: [
         BrowserModule,
         ButtonModule,
         SelectModule,
-        ComboboxModule
+        ComboboxModule,
+        FormsModule
     ],
-    providers: [],
-    bootstrap: []
+    providers: [DynamicComponentService]
 })
 export class AppModule implements DoBootstrap {
 
-    constructor(injector: Injector) {
-        const buttonComponent = createCustomElement(ButtonComponent, { injector: injector });
-        customElements.define('fd-web-component-button', buttonComponent);
-        const selectComponent = createCustomElement(SelectComponent, { injector: injector });
-        customElements.define('fd-web-component-select', selectComponent);
-        const optionComponent = createCustomElement(OptionComponent, { injector: injector });
-        customElements.define('fd-web-component-option', optionComponent);
-        const comboboxComponent = createCustomElement(ComboboxComponent, { injector: injector });
-        customElements.define('fd-web-component-combobox', comboboxComponent);
+    constructor(private _injector: Injector) { }
+
+    ngDoBootstrap(): void {
+        this.defineCustomElement('wc-select', WcSelectComponent);
+        this.defineCustomElement('wc-button', WcButtonComponent);
+        this.defineCustomElement('wc-combobox', WcComboboxComponent);
     }
 
-    ngDoBootstrap() { }
+    defineCustomElement(name: string, component: Type<any>): void {
+        customElements.define(name, createCustomElement(component, { injector: this._injector }));
+    }
 }
