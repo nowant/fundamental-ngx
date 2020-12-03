@@ -238,6 +238,11 @@ export abstract class BaseMultiInput extends CollectionBaseInput implements Afte
     _suggestions: MultiInputOption[];
 
     /** @hidden
+     * List of matched suggestions
+     * */
+    _newSuggestions: MultiInputOption[];
+
+    /** @hidden
      * Max width of list container
      * */
     maxWidth?: number;

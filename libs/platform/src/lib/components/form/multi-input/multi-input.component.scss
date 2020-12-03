@@ -1,11 +1,17 @@
 .fd-popover-multi-input-custom {
     width: 60.5%;
     position: fixed;
+    box-shadow: 0px 0px 0px 0.06rem rgba(0, 0, 0, 0.42), 0px 0.62rem 1.87rem 0px rgba(0, 0, 0, 0.3);
     box-shadow: var(
         --sapContent_Shadow2,
         0 0 0 0.0625rem rgba(0, 0, 0, 0.42),
         0 0.625rem 1.875rem 0 rgba(0, 0, 0, 0.3)
     );
+}
+
+_:-ms-fullscreen,
+:root .fd-popover-multi-input-custom {
+    width: 50%;
 }
 .fd-input {
     &.fd-multi-input-tokenizer-input {

@@ -35,7 +35,7 @@
         (click)="mobile && onPrimaryButtonClick(false)"
     >
         <fdp-input-group-addon>
-            <fd-tokenizer  class="tokernizer-width" *ngIf="selected">
+            <fd-tokenizer class="tokernizer-width" *ngIf="selected">
                 <fd-token [readOnly]="disabled" (onCloseClick)="removeToken(token)" *ngFor="let token of selected">{{
                     token.label
                 }}</fd-token>
@@ -55,7 +55,7 @@
                 [title]="listItem.label"
                 [description]="listItem.description"
                 [avatarSrc]="listItem.avatarSrc"
-                (click)="addToArray(listItem)"
+                (itemSelected)="addToArray(listItem)"
             >
             </fdp-standard-list-item>
         </ng-container>
@@ -75,7 +75,7 @@
                 <fdp-standard-list-item
                     *ngFor="let optionItem of group.children; let i = index"
                     [title]="optionItem.label"
-                    (click)="addToArray(optionItem)"
+                    (itemSelected)="addToArray(optionItem)"
                 >
                 </fdp-standard-list-item>
             </ng-container>

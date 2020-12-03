@@ -1,5 +1,5 @@
 import { Direction } from '@angular/cdk/bidi';
-import { BACKSPACE, DELETE, DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
+import { BACKSPACE, DELETE, DOWN_ARROW, ENTER, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
 import { CdkConnectedOverlay } from '@angular/cdk/overlay';
 import {
     ChangeDetectionStrategy,
@@ -66,7 +66,7 @@ export class PlatformMultiInputComponent extends BaseMultiInput implements OnIni
     @Input()
     type: InputType;
 
-    @ViewChild('listTemplateDD')
+    @ViewChild(ListComponent)
     listTemplateDD: ListComponent;
 
     /** Selected values from the list items. */

@@ -14,8 +14,6 @@ export class PlatformMulitInputExampleComponent {
         { firstName: 'California', lastName: 'Sacramento' },
         { firstName: 'Colorado', lastName: 'Denver' },
         { firstName: 'Connecticut', lastName: 'Hartford' },
-        { firstName: 'Colorado', lastName: 'Denver' },
-        { firstName: 'Connecticut', lastName: 'Hartford' },
         { firstName: 'Kentucky', lastName: 'Frankfort' },
         { firstName: 'Delaware', lastName: 'Dover' },
         { firstName: 'Florida', lastName: 'Tallahassee' },

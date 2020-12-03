@@ -7,6 +7,7 @@
         zone="zLeft"
         rank="1"
         placeholder="Field placeholder text"
+        [required]="true"
     >
         <fdp-multi-input
             [formControl]="ffl1.formControl"
@@ -16,6 +17,7 @@
             name="input1"
             [dataSource]="_datasource"
             displayKey="firstName"
+            [selectionMode]="'Multi'"
         >
         </fdp-multi-input>
     </fdp-form-field>
