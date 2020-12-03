@@ -1,10 +1,5 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
 
-export interface User {
-    firstName: string;
-    lastName: string;
-}
-
 @Component({
     selector: 'fdp-platform-multi-input-example',
     templateUrl: './platform-mulit-input-example.component.html',

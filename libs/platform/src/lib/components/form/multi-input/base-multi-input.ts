@@ -163,6 +163,10 @@ export abstract class BaseMultiInput extends CollectionBaseInput implements Afte
     @Output()
     selectionChange = new EventEmitter<MultiInputSelectionChangeEvent>();
 
+    /** @hidden Emits event when the menu is opened/closed */
+    @Output()
+    isOpenChange: EventEmitter<boolean> = new EventEmitter<boolean>();
+
     /** @hidden */
     @ViewChild(ListComponent)
     listComponent: ListComponent;
@@ -323,12 +327,6 @@ export abstract class BaseMultiInput extends CollectionBaseInput implements Afte
             this._dsSubscription.unsubscribe();
         }
     }
-
-    /** @hidden
-     * Method to emit change event
-     */
-    abstract emitChangeEvent<K>(value: K): void;
-
     /** @hidden
      * Define is this item selected
      */
@@ -355,27 +353,29 @@ export abstract class BaseMultiInput extends CollectionBaseInput implements Afte
         super.writeValue(value);
     }
 
-    /** @hidden
-     * Close list
-     * */
-    close(event: MouseEvent = null, forceClose: boolean = false): void {
-        if (event) {
-            const target = event.target as HTMLInputElement;
-            if (target && target.id === this.id) {
-                return;
-            }
-        }
+    /** @hidden */
+    popoverOpenChangeHandle(isOpen: boolean): void {
+        this.isOpen ? this.open() : this.close();
+    }
 
-        if (this.isOpen && (forceClose || this.canClose)) {
-            this.isOpen = false;
-            this.openChange.next(this.isOpen);
-            this.cd.markForCheck();
-            this.onTouched();
-        }
+    /** Opens the select popover body. */
+    open(): void {
+        this.isOpen = true;
+        this.isOpenChange.emit(this.isOpen);
+        this._cd.markForCheck();
+    }
+    /** Closes the select popover body. */
+    close(): void {
+        this.isOpen = false;
+        this.isOpenChange.emit(this.isOpen);
+        this._cd.markForCheck();
     }
 
     /** @hidden */
     searchTermChanged(text: string = this.inputText): void {
+        if (text) {
+            this.open();
+        }
         const map = new Map();
         map.set('query', text);
         map.set('limit', 12);
@@ -678,8 +678,8 @@ export abstract class BaseMultiInput extends CollectionBaseInput implements Afte
             const value = items[i];
             selectItems.push({
                 label: this.displayValue(value),
-                avatarSrc: this.objectGet(value, this.avatarsrc),
-                description: this.objectGet(value, this.description),
+                avatarSrc: this.avatarsrc ? this.objectGet(value, this.avatarsrc) : null,
+                description: this.description ? this.objectGet(value, this.description) : null,
                 value: value
             });
         }

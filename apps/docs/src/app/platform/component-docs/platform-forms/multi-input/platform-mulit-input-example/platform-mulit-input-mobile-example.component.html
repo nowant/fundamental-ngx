@@ -13,10 +13,14 @@
             type="text"
             id="fdp-id"
             name="input1"
-            [dataSource]="_datasource"
+            [dataSource]="list_elements"
             displayKey="firstName"
+            description="lastName"
+            showSecondaryText="true"
+            avatarsrc="image"
             mobile="true"
             [mobileConfig]="mobileConfig"
+            hasByLine="true"
         >
         </fdp-multi-input>
     </fdp-form-field>

@@ -41,8 +41,9 @@ import { ListConfig } from '../../list/public_api';
 
 import { FormFieldControl } from '../form-control';
 import { FormField } from '../form-field';
+import { InputGroupAddonComponent } from '../input-group/public_api';
 import { InputType } from '../input/input.component';
-import { BaseMultiInput, MultiInputSelectionChangeEvent } from './base-multi-input';
+import { BaseMultiInput } from './base-multi-input';
 import { PlatformMultiInputMobileComponent } from './multi-input-mobile/multi-input-mobile.component';
 import { MULTIINPUT_COMPONENT } from './multi-input.interface';
 
@@ -78,6 +79,9 @@ export class PlatformMultiInputComponent extends BaseMultiInput implements OnIni
     @Input()
     selectionMode: SelectionType = 'none';
 
+    @Input()
+    hasByLine = false;
+
     /** @hidden */
     selectedValue?: MultiInputOption;
 
@@ -96,21 +100,12 @@ export class PlatformMultiInputComponent extends BaseMultiInput implements OnIni
         this._disabled = value;
     }
 
-    /** Represents the  value injected from the selected list value*/
-    @Input()
-    set selectedListVariable(selectedValue) {
-        this._selectedListVariable = selectedValue;
-        if (this._selectedListVariable) {
-            this.addToArray(this._selectedListVariable);
-        }
-    }
-    get selectedListVariable(): any {
-        return this._selectedListVariable;
-    }
-
     /** @hidden */
     @ViewChild(TokenizerComponent)
     tokenizer: TokenizerComponent;
+
+    @ViewChild(InputGroupAddonComponent)
+    inputGroupAddOn: InputGroupAddonComponent;
 
     /** @hidden */
     @ViewChild('controlTemplate')
@@ -124,22 +119,11 @@ export class PlatformMultiInputComponent extends BaseMultiInput implements OnIni
     @ViewChild(CdkConnectedOverlay)
     _connectedOverlay: CdkConnectedOverlay;
 
-    /** @hidden Emits event when the menu is opened/closed */
-    @Output()
-    isOpenChange: EventEmitter<boolean> = new EventEmitter<boolean>();
-
     public updateSelectedListVariables = [];
     private _dataSourceSubscription = Subscription.EMPTY;
 
-    /**
-     * Whether the popover is opened.
-     */
-    isOpen = false;
-
     /** @hidden */
     private _direction: Direction = 'ltr';
-
-    private _selectedListVariable: any;
 
     constructor(
         readonly cd: ChangeDetectorRef,
@@ -186,31 +170,17 @@ export class PlatformMultiInputComponent extends BaseMultiInput implements OnIni
     }
 
     addToArray($select: any): void {
-        this.selected.push($select);
-        this.popoverOpenChangeHandle(this.isOpen);
+        if (this.selected.indexOf($select) === -1) {
+            this.selected.push($select);
+            this.close();
+        }
+        this._cd.detectChanges();
     }
 
     removeToken(token): void {
         this.selected.splice(this.selected.indexOf(token), 1);
     }
 
-    /** @hidden */
-    popoverOpenChangeHandle(isOpen: boolean): void {
-        this.isOpen ? this.open() : this.close();
-    }
-
-    /** Opens the select popover body. */
-    open(): void {
-        this.isOpen = false;
-        this.isOpenChange.emit(this.isOpen);
-        this._cd.markForCheck();
-    }
-    /** Closes the select popover body. */
-    close(): void {
-        this.isOpen = true;
-        this.isOpenChange.emit(this.isOpen);
-        this._cd.markForCheck();
-    }
     /** @hidden */
     removeSelectedTokens(event: KeyboardEvent): void {
         let allSelected = true;
@@ -230,15 +200,6 @@ export class PlatformMultiInputComponent extends BaseMultiInput implements OnIni
             this.tokenizer.focusTokenElement(this.tokenizer.tokenList.length - 1);
         }
     }
-    /** @hidden
-     * Method to emit change event
-     */
-    emitChangeEvent<T>(modelValue: T): void {
-        const event = new MultiInputSelectionChangeEvent(this, modelValue);
-
-        this.selectionChange.emit(event);
-    }
-
     /** @hidden
      * Define is selected item selected
      */
@@ -318,8 +279,6 @@ export class PlatformMultiInputComponent extends BaseMultiInput implements OnIni
     private _updateModel(value: any): void {
         // setting value, it will call setValue()
         this.value = value;
-
-        this.emitChangeEvent(value ? value : null);
     }
 
     /** @hidden */
