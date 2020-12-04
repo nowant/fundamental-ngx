@@ -10,7 +10,7 @@
         cdk-connected-overlay
         [cdkConnectedOverlayOrigin]="selectTrigger"
         [cdkConnectedOverlayOpen]="isOpen && _suggestions.length > 0"
-        (overlayOutsideClick)="close($event)"
+        (overlayOutsideClick)="close()"
         [cdkConnectedOverlayMinWidth]="minWidth"
     >
         <div class="fdp-multi-input__list-container fd-popover__popper fd-popover__body--no-arrow">
