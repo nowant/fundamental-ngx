@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { OverlayModule } from '@angular/cdk/overlay';
 
-import { PopoverModule, TokenModule, PipeModule } from '@fundamental-ngx/core';
+import { PopoverModule, TokenModule, PipeModule, FormModule, InputGroupModule } from '@fundamental-ngx/core';
 
 import { PlatformInputGroupModule } from '../input-group/input-group.module';
 import { PlatformMultiInputComponent } from './multi-input.component';
@@ -16,12 +17,12 @@ import { PlatformButtonModule } from '../../button/button.module';
         CommonModule,
         FormsModule,
         PlatformInputGroupModule,
-        PopoverModule,
         PlatformListModule,
         StandardListItemModule,
         TokenModule,
         PipeModule,
-        PlatformButtonModule
+        PlatformButtonModule,
+        OverlayModule
     ],
     exports: [PlatformMultiInputComponent]
 })

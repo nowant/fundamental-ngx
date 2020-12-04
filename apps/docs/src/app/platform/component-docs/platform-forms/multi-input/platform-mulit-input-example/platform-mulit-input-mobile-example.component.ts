@@ -12,7 +12,7 @@ export interface User {
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PlatformMulitInputMobileExampleComponent {
-    list_elements = [
+    _dataSource = [
         {
             firstName: 'Alabama',
             lastName: 'Cupidatat aliquip officia reprehenderit aute sit ex consectetur exercitation.',

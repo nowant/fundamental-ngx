@@ -163,7 +163,6 @@ export class PlatformMultiInputComponent extends BaseMultiInput implements OnIni
                 .pipe(takeUntil(this._destroyed))
                 .subscribe(() => this._connectedOverlay.overlayRef.setDirection(this._direction));
         }
-
         if (this.mobile) {
             this._setUpMobileMode();
         }
@@ -185,13 +184,15 @@ export class PlatformMultiInputComponent extends BaseMultiInput implements OnIni
     removeSelectedTokens(event: KeyboardEvent): void {
         let allSelected = true;
         if (KeyUtil.isKeyCode(event, [DELETE, BACKSPACE])) {
-            this.tokenizer.tokenList.forEach((token) => {
-                if (token.selected || token.tokenWrapperElement.nativeElement === document.activeElement) {
-                    this.removeToken(token.elementRef.nativeElement.innerText);
-                } else {
-                    allSelected = false;
-                }
-            });
+            if (this.tokenizer) {
+                this.tokenizer.tokenList.forEach((token) => {
+                    if (token.selected || token.tokenWrapperElement.nativeElement === document.activeElement) {
+                        this.removeToken(token.elementRef.nativeElement.innerText);
+                    } else {
+                        allSelected = false;
+                    }
+                });
+            }
         }
         if (KeyUtil.isKeyCode(event, [DOWN_ARROW, UP_ARROW])) {
             this.listTemplateDD.listItems.first.focus();

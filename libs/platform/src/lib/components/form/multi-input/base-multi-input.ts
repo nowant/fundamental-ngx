@@ -40,7 +40,8 @@ import {
     KeyUtil,
     ListComponent,
     MobileModeConfig,
-    TemplateDirective
+    TemplateDirective,
+    stateType
 } from '@fundamental-ngx/core';
 
 import {
@@ -56,7 +57,7 @@ import { CollectionBaseInput } from '../collection-base.input';
 import { PlatformMultiInputComponent } from './multi-input.component';
 import { ListConfig, MatchingStrategy } from '../../list/public_api';
 import { isFunction, isJsObject, isString } from '../../../utils/lang';
-import { ContentDensity, FormFieldControl } from '../form-control';
+import { ContentDensity, FormFieldControl, Status } from '../form-control';
 import { FormField } from '../form-field';
 
 export type TextAlignment = 'left' | 'right';
@@ -360,7 +361,7 @@ export abstract class BaseMultiInput extends CollectionBaseInput implements Afte
 
     /** @hidden */
     popoverOpenChangeHandle(isOpen: boolean): void {
-        this.isOpen ? this.open() : this.close();
+        this.isOpen ? this.close() : this.open();
     }
 
     /** Opens the select popover body. */
@@ -385,6 +386,7 @@ export abstract class BaseMultiInput extends CollectionBaseInput implements Afte
         map.set('query', text);
         map.set('limit', 12);
         this.ds.match(map);
+
         this.cd.detectChanges();
     }
 
@@ -429,10 +431,6 @@ export abstract class BaseMultiInput extends CollectionBaseInput implements Afte
         }
 
         this.showList(!isOpen);
-
-        if (!this.mobile) {
-            this.searchInputElement.nativeElement.focus();
-        }
     }
 
     /**
