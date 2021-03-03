@@ -9,6 +9,7 @@ export * from './plugins/lookup/lookup.service';
 export * from './plugins/lookup/plugin-descriptor.model';
 export * from './plugins/plugin-manager.service';
 export * from './plugins/path-utils';
+export * from './plugins/path-resolver.pipe';
 export * from './theming/theme-manager.service';
 export * from './error/error-notifier';
 export * from './error/default-error-handler.service';

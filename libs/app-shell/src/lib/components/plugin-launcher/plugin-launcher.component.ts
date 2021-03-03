@@ -19,7 +19,7 @@ import {
 } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { loadRemoteModule } from '../../api/plugins/federation-utils';
-import { getBasePath } from '../../api/plugins/path-utils';
+import { getBasePath, overrideNgComponentRelativePaths } from '../../api/plugins/path-utils';
 import {
     AngularIvyComponentDescriptor,
     DescriptorsModule,
@@ -151,6 +151,8 @@ export class PluginLauncherComponent implements OnChanges, AfterViewChecked {
                 this._ngComponent = _remoteModule[ngPluginModule.name];
             }
 
+            // Static asset paths overriding
+            overrideNgComponentRelativePaths(descriptor.uri, this._ngComponent);
             this._cd.detectChanges();
         }
         this._pluginMgr.register(descriptor);
