@@ -14,10 +14,12 @@ import {
     SimpleChanges,
     Type,
     ViewChild,
-    ViewContainerRef
+    ViewContainerRef,
+    ViewEncapsulation
 } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { loadRemoteModule } from '../../api/plugins/federation-utils';
+import { getBasePath } from '../../api/plugins/path-utils';
 import {
     AngularIvyComponentDescriptor,
     DescriptorsModule,
@@ -31,6 +33,8 @@ import { PluginLauncherModule } from './plugin-launcher.module';
     selector: 'fds-plugin-launcher',
     styleUrls: ['./plugin-launcher.component.scss'],
     template: `
+        <base *ngIf="_baseHref"
+              [href]="_baseHref">
         <ng-container *ngComponentOutlet="_ngComponent; ngModuleFactory: _ngModule"></ng-container>
         <iframe
             *ngIf="_safeIframeUri"
@@ -39,7 +43,8 @@ import { PluginLauncherModule } from './plugin-launcher.module';
             [src]="_safeIframeUri"
             [style.minHeight]="iframeAttrs.height"
         ></iframe>`,
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    encapsulation: ViewEncapsulation.ShadowDom
 })
 export class PluginLauncherComponent implements OnChanges, AfterViewChecked {
     /** plugin name */
@@ -63,17 +68,20 @@ export class PluginLauncherComponent implements OnChanges, AfterViewChecked {
     _ngModule: NgModuleFactory<any>;
 
     _safeIframeUri: SafeResourceUrl;
+
+    _baseHref: SafeResourceUrl;
+
     private descriptor: Partial<PluginDescriptor>;
 
     constructor(private readonly _injector: Injector,
-                private readonly _elementRef: ElementRef,
-                private readonly cfr: ComponentFactoryResolver,
-                private readonly _cd: ChangeDetectorRef,
-                private readonly _render: Renderer2,
-                private readonly _pluginMgr: PluginManagerService,
-                private readonly lookupService: LookupService,
-                private readonly sanitizer: DomSanitizer,
-                private readonly compiler: Compiler) {
+        private readonly _elementRef: ElementRef,
+        private readonly cfr: ComponentFactoryResolver,
+        private readonly _cd: ChangeDetectorRef,
+        private readonly _render: Renderer2,
+        private readonly _pluginMgr: PluginManagerService,
+        private readonly lookupService: LookupService,
+        private readonly sanitizer: DomSanitizer,
+        private readonly compiler: Compiler) {
     }
 
     async ngOnChanges(changes: SimpleChanges): Promise<void> {
@@ -118,6 +126,11 @@ export class PluginLauncherComponent implements OnChanges, AfterViewChecked {
             this._safeIframeUri = this.sanitizer.bypassSecurityTrustResourceUrl(_url);
             return;
         }
+
+        // setting base href
+        this._baseHref = this.sanitizer.bypassSecurityTrustResourceUrl(
+            getBasePath(descriptor.uri)
+        );
 
         if (_pluginModule.type === 'custom-element') {
             const element = document.createElement(_module);
